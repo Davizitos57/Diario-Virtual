@@ -188,5 +188,21 @@ public class Diario {
             System.out.println("\nUsuário inválido.");
         }
     }
+
+    //Conta o número de palavras de uma entrada
+    public int contarPalavrasEntrada(String entrada){
+        if(entrada == null || entrada.isEmpty()){
+            return 0;
+        }
+        return entrada.split("\\s+").length;
+    }
+
+    //Conta o número total de palavras nas entradas do Usuario atual
+    public int contarPalavrasTotais(){
+        return entradas.stream()
+                .filter(entrada -> entrada.getAutor().equals(usuarioAtual))
+                .mapToInt(entrada -> contarPalavrasEntrada(entrada.getTexto()))
+                .sum();
+    }
 }
 
