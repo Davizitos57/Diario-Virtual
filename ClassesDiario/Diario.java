@@ -81,6 +81,23 @@ public class Diario {
         return null;
     }
 
+    //Realiza o login de um usuario
+    public static void login(Usuario usuario){
+        usuarioAtual = usuario;
+        System.out.prinln("Usuário " + usuario.getUsername() + " foi logado com sucesso");
+    }
 
+    //Realiza o logout do usuario atual
+    public static void logout(){
+        if(usuarioAtual != null){
+            System.out.println("Usuário " + usuarioAtual.getUsername() + " saiu do Diário\n");
+            usuarioAtual = null;
+        }
+        else{
+            System.out.println("Não há usuário logado no Diário\n");
+        }
+    }
+
+    //Adiciona uma nova entrada ao diário
 }
 
