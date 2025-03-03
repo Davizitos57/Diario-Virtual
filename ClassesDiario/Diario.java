@@ -141,5 +141,52 @@ public class Diario {
             System.out.println("Nenhuma entrada encontrada com a palavra-chave: " + palavraChave);
         }
     }
+
+    //Visualiza todas as entradas no diário (acessível apenas pelo administrador)
+    public void visualizarEntradasAdmin(){
+        if(entradas.isEmpty()){
+            System.out.println("\nO Diário está vázio.");
+        }
+        else{
+            System.out.println("\nEntradas do Diário: ");
+            entradas.forEach(System.out::println);
+        }
+    }
+
+    //Substitui a última entrada de um Usuario específico (acessível apenas pelo administrador)
+    public void substituirEntradasAdmin(String usuario, String novaEntrada){
+        for(int i = entradas.size() - 1; i>=0; i--){
+            EntradaDiario entrada = entradas.get(i);
+            if(entrada.getAutor().getUsername().equals(usuario)){
+                entrada.setTexto(novaEntrada);
+                System.out.println("\nEntrada editada com sucesso.");
+                return;
+            }
+        }
+        System.out.println("Usuário inválido ou não há entradas para sobrescrever.");
+    }
+
+    //Deleta todas as entradas de um Usuario específico (acessível apenas pelo administrador)
+    public void deletarEntradasAdmin(String usuario){
+        entradas.removeIf(entrada -> entrada.getAutor().getUsername().equals(usuario));
+        System.out.pritnln("Entradas removidas");
+    }
+
+    //Sobrescreve a última entrada de um Usuario específico (acessível apenas pelo administrador)
+    public void sobrescreverEntradasAdmin(String usuario, String novaEntrada){
+        boolean nomeDoUsuarioExiste = false;
+        for(int i = entradas.size() - 1; i>=0; i--){
+            EntradaDiario entrada = entradas.get(i);
+            if(entrada.getAutor().getUsername().equals(usuario)){
+                entrada.setTexto(entrada.getTexto() + " " + novaEntrada);
+                nomeDoUsuarioExiste = true;
+                System.out.println("\nEntrada editada com sucesso.");
+                break;
+            }
+        }
+        if(!nomeDoUsuarioExiste){
+            System.out.println("\nUsuário inválido.");
+        }
+    }
 }
 
