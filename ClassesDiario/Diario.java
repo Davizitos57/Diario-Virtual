@@ -29,12 +29,12 @@ public class Diario {
         private String dataHora;
 
         //Construtor da classe EntradaDiario
-        public EntradaDiario(String entradas, Usuario autor){
-            this.texto = entradas;
+        public EntradaDiario(String texto, Usuario autor){
+            this.texto = texto;
             this.autor = autor;
-            //Captura a data e hora atual em um formato especificado
+            // Captura a data e hora atual no formato especificado "brasileiro"
             LocalDateTime agora = LocalDateTime.now();
-            DateTimeFormatter formatador = DataTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             this.dataHora = agora.format(formatador);
         }
         //Define o texto da entrada
@@ -61,14 +61,14 @@ public class Diario {
         //Verifica se o nome de usuário já existe no sistema
         for(Usuario user : usuarios){
             if(user.getUsername().equals(username)){
-                System.out.println("\nEsse nome de usuario já está sendo utilizado, por favor escolha outro\n");
+                System.out.println("Esse nome de usuario já está sendo utilizado, por favor escolha outro\n");
                 return;
             }
         }
         //Caso contrario, adiciona o novo usuario a lista de usuarios do sistema
         Usuario novoUsuario = new Usuario(username, senha, isAdmin);
         usuarios.add(novoUsuario);
-        System.out.println("\nUsuario registrado com sucesso!\n");
+        System.out.println("Usuario registrado com sucesso!\n");
     }
 
     //Autentica um novo usuario com base em nome de usuario e senha
@@ -84,7 +84,7 @@ public class Diario {
     //Realiza o login de um usuario
     public static void login(Usuario usuario){
         usuarioAtual = usuario;
-        System.out.prinln("Usuário " + usuario.getUsername() + " foi logado com sucesso");
+        System.out.println("Usuário " + usuario.getUsername() + " foi logado com sucesso");
     }
 
     //Realiza o logout do usuario atual
@@ -112,18 +112,22 @@ public class Diario {
 
     //Visualiza as entradas do usuário atualmente logado
     public void visualizarEntradas(){
+        if(usuarioAtual == null){
+            System.out.println("Nenhum usuário esta logado");
+            return;
+        }
         boolean encontrou = false;
         for(EntradaDiario entrada : entradas){
-            if(entrada.getAutor().equals(usuarioAtual)){
+            if(entrada.getAutor().getUsername().equals(usuarioAtual.getUsername())){
                 if(!encontrou){
-                    System.out.println("\nEntradas do Diário: ");
+                    System.out.println("Entradas do Diário: ");
                     encontrou = true;
                 }
                 System.out.println(entrada);
             }
         }
         if(!encontrou){
-            System.out.println("\nVocê não possui entradas no diário");
+            System.out.println("Você não possui entradas no diário");
         }
     }
 
@@ -131,11 +135,13 @@ public class Diario {
     public void pesquisarEntradas(String palavraChave){
         boolean encontrou = false;
         for(EntradaDiario entrada : entradas){
-            if(entrada.getAutor().equals(username) && entrada.getAutor().toLowerCase().contains(palavraChave.toLowerCase())){
-                System.out.println("\nEntradas encontradas: ");
-                encontrou = true;
+            if(entrada.getAutor().equals(usuarioAtual) && entrada.getTexto().toLowerCase().contains(palavraChave.toLowerCase())){
+                if(!encontrou) {
+                    System.out.println("Entradas encontradas: ");
+                    encontrou = true;
+                }
+                System.out.println(entrada);
             }
-            System.out.println(entrada);
         }
         if(!encontrou){
             System.out.println("Nenhuma entrada encontrada com a palavra-chave: " + palavraChave);
@@ -169,7 +175,7 @@ public class Diario {
     //Deleta todas as entradas de um Usuario específico (acessível apenas pelo administrador)
     public void deletarEntradasAdmin(String usuario){
         entradas.removeIf(entrada -> entrada.getAutor().getUsername().equals(usuario));
-        System.out.pritnln("Entradas removidas");
+        System.out.println("Entradas removidas");
     }
 
     //Sobrescreve a última entrada de um Usuario específico (acessível apenas pelo administrador)
