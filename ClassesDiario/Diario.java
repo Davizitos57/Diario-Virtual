@@ -54,5 +54,33 @@ public class Diario {
             return dataHora + " - " + autor.getUsername() + ": " + texto;
         }
     }
+
+    //Registra um novo usuario no sistema
+    public void registrarUsuario(String username, String senha, boolean isAdmin){
+        boolean nomeDoUsuarioExiste = false;
+        //Verifica se o nome de usuário já existe no sistema
+        for(Usuario user : usuarios){
+            if(user.getUsername().equals(username)){
+                System.out.println("\nEsse nome de usuario já está sendo utilizado, por favor escolha outro\n");
+                return;
+            }
+        }
+        //Caso contrario, adiciona o novo usuario a lista de usuarios do sistema
+        Usuario novoUsuario = new Usuario(username, senha, isAdmin);
+        usuarios.add(novoUsuario);
+        System.out.println("\nUsuario registrado com sucesso!\n");
+    }
+
+    //Autentica um novo usuario com base em nome de usuario e senha
+    public Usuario autenticarUsuario(String username, String senha){
+        for(Usuario user : usuarios){
+            if(user.getUsername().equals(username) && user.getSenha().equals(senha)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+
 }
 
