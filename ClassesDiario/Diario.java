@@ -99,5 +99,47 @@ public class Diario {
     }
 
     //Adiciona uma nova entrada ao diário
+    public void adicionarEntrada(String texto){
+        if(usuarioAtual != null){
+            EntradaDiario entrada = new EntradaDiario(texto, usuarioAtual);
+            entradas.add(entrada);
+            System.out.println("Entrada adicionada pelo perfil " + usuarioAtual.getUsername());
+        }
+        else{
+            System.out.println("Nenhum usuário está logado, tente novamente mais tarde.\n");
+        }
+    }
+
+    //Visualiza as entradas do usuário atualmente logado
+    public void visualizarEntradas(){
+        boolean encontrou = false;
+        for(EntradaDiario entrada : entradas){
+            if(entrada.getAutor().equals(usuarioAtual)){
+                if(!encontrou){
+                    System.out.println("\nEntradas do Diário: ");
+                    encontrou = true;
+                }
+                System.out.println(entrada);
+            }
+        }
+        if(!encontrou){
+            System.out.println("\nVocê não possui entradas no diário");
+        }
+    }
+
+    //Pesquisa entradas do usuario atual atraves de palavras-chave
+    public void pesquisarEntradas(String palavraChave){
+        boolean encontrou = false;
+        for(EntradaDiario entrada : entradas){
+            if(entrada.getAutor().equals(username) && entrada.getAutor().toLowerCase().contains(palavraChave.toLowerCase())){
+                System.out.println("\nEntradas encontradas: ");
+                encontrou = true;
+            }
+            System.out.println(entrada);
+        }
+        if(!encontrou){
+            System.out.println("Nenhuma entrada encontrada com a palavra-chave: " + palavraChave);
+        }
+    }
 }
 
